@@ -2,7 +2,14 @@ class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :update, :destroy]
 
   def index
-    @employees = Employee.all
+    order_by = params[:order].present? ? params[:order] : "desc"
+    @employees = if params[:nip].present?
+                  Employee.filter_by_nip(params[:nip]).order(nip: order_by)
+                 elsif params[:name].present?
+                  Employee.filter_by_name(params[:name]).order(name: order_by)
+                 else
+                  Employee.all.order(created_at: order_by)
+                 end
     render_success(@employees)
   end
 
@@ -11,7 +18,7 @@ class EmployeesController < ApplicationController
     if @employee.save
       render_success(@employee)
     else
-      render_error(@employee)
+      render_error(false, message: @employee.errors.messages)
     end
   end
 
@@ -29,7 +36,7 @@ class EmployeesController < ApplicationController
 
   def destroy
     if @employee.destroy
-      render_success(nil, message: "success to destroy employee")
+      render_success(true, message: "success to destroy employee")
     else
       render_error(@employee, message: @employee.errors.messages)
     end
