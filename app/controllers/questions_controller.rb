@@ -27,8 +27,7 @@ class QuestionsController < ApplicationController
 
   def question_three
     return render_error(false, message: "please insert 2 words for chek anagram") unless params[:anagram].present?
-    words = params[:anagram]
-    array_words = words.split(" ")
+    array_words = params[:anagram].split(" ")
     word1 = array_words[0]
     word2 = array_words[1]
     @result_three = {
@@ -40,13 +39,23 @@ class QuestionsController < ApplicationController
   end
 
   def question_four
-    
+    return render_error(false, message: "please insert numbers for check separator") unless params[:numbers].present?
+    numbers = params[:numbers]
+    number = numbers.delete(".")
+    number_digit = number.chars
+    number_size = number_digit.size
+    @result_four = []
+    number_digit.each_with_index do |digit, index|
+      factor = 10 ** (number_size - index - 1)
+      @result_four.push(digit.to_i * factor)
+    end
+    render_success(@result_four)
   end
 
   private
 
   def question_params
-    params.require.permit(:number, :id_start, :id_end, :year)
+    params.require.permit(:number, :id_start, :id_end, :year, :anagram)
   end
 
   def convert_number(value)
