@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     collection do
       get :question_one
       get :question_two
+      get :question_three
+      get :question_four
     end
   end
   resources :employees

@@ -26,7 +26,17 @@ class QuestionsController < ApplicationController
   end
 
   def question_three
-
+    return render_error(false, message: "please insert 2 words for chek anagram") unless params[:anagram].present?
+    words = params[:anagram]
+    array_words = words.split(" ")
+    word1 = array_words[0]
+    word2 = array_words[1]
+    @result_three = {
+      word1: word1,
+      word2: word2,
+      is_anagram: word1.chars.sort == word2.chars.sort
+    }
+    render_success(@result_three)
   end
 
   def question_four
