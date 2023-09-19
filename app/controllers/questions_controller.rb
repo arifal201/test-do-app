@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
   end
 
   def question_one
-    numbers = question_params[:number] || 10
+    numbers = params[:number].to_i || 10
     total = 1
     @result = []
     while total <= numbers do
@@ -15,19 +15,27 @@ class QuestionsController < ApplicationController
   end
 
   def question_two
-    id_start = params[:id_start].to_i
-    id_end = params[:id_end].to_i
-    param_year = params[:year]
+    id_start = params[:id_start].to_i || 20
+    id_end = params[:id_end].to_i || 100
+    param_year = params[:year] || 2023
     array_ids = [id_start..id_end]
 
-    years = RegistartionYear.where(id: array_ids).update_all(year: param_year)
+    RegistartionYear.where(id: array_ids).update_all(year: param_year)
     render json: RegistartionYear.all
+  end
+
+  def question_three
+
+  end
+
+  def question_four
+    
   end
 
   private
 
   def question_params
-    params.require(:question).permit(:number, :id_start, :id_end, :year)
+    params.require.permit(:number, :id_start, :id_end, :year)
   end
 
   def convert_number(value)
