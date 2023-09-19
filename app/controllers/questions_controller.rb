@@ -15,17 +15,19 @@ class QuestionsController < ApplicationController
   end
 
   def question_two
-    id_start = question_params[:id_start]
-    id_end = question_params[:id_end]
+    id_start = params[:id_start].to_i
+    id_end = params[:id_end].to_i
+    param_year = params[:year]
+    array_ids = [id_start..id_end]
 
-    years = RegistartionYear.all
-    render json: years
+    years = RegistartionYear.where(id: array_ids).update_all(year: param_year)
+    render json: RegistartionYear.all
   end
 
   private
 
   def question_params
-    params.require(:question).permit(:number, :id_start, :id_end)
+    params.require(:question).permit(:number, :id_start, :id_end, :year)
   end
 
   def convert_number(value)
