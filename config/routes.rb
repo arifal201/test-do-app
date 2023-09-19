@@ -10,4 +10,5 @@ Rails.application.routes.draw do
       get :question_two
     end
   end
+  resources :employees
 end
