@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
       @result.push(convert_number(total))
       total += 1
     end
-    render json: @result
+    render_success(@result)
   end
 
   def question_two
@@ -21,7 +21,8 @@ class QuestionsController < ApplicationController
     array_ids = [id_start..id_end]
 
     RegistartionYear.where(id: array_ids).update_all(year: param_year)
-    render json: RegistartionYear.all
+    @result_two = RegistartionYear.all
+    render_success(@result_two)
   end
 
   def question_three

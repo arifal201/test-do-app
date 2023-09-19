@@ -1,25 +1,38 @@
 class EmployeesController < ApplicationController
+  before_action :set_employee, only: [:show, :update, :destroy]
+
   def index
     @employees = Employee.all
-    render json: @employees
+    render_success(@employees)
   end
 
   def create
     @employee = Employee.new(params_empolyee)
     if @employee.save
-      render json: @employee
+      render_success(@employee)
     else
-      render json: @employee.errors.messages
+      render_error(@employee)
     end
   end
 
   def update
+    if @employee.update(params_empolyee)
+      render_success(@employee)
+    else
+      render_error(@employee)
+    end
   end
 
   def show
+    render_success(@employee)
   end
 
   def destroy
+    if @employee.destroy
+      render_success(nil, message: "success to destroy employee")
+    else
+      render_error(@employee, message: @employee.errors.messages)
+    end
   end
 
   private
