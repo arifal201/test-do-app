@@ -14,7 +14,7 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    @employee = Employee.new(params_empolyee)
+    @employee = Employee.new(params_employee)
     if @employee.save
       render_success(@employee)
     else
@@ -23,7 +23,7 @@ class EmployeesController < ApplicationController
   end
 
   def update
-    if @employee.update(params_empolyee)
+    if @employee.update(params_employee)
       render_success(@employee)
     else
       render_error(@employee)
@@ -44,8 +44,8 @@ class EmployeesController < ApplicationController
 
   private
 
-  def params_empolyee
-    params.require(:employee).permit(:nip, :email, :gender, :name, :hoby)
+  def params_employee
+    params.require(:employee).permit(:nip, :email, :gender, :name, :hoby, :image_data)
   end
 
   def set_employee

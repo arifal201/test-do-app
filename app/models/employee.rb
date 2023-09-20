@@ -10,4 +10,15 @@ class Employee < ApplicationRecord
 
   scope :filter_by_nip, ->(nip) { where("CAST(nip AS TEXT) ILIKE ?", "%#{nip}%")}
   scope :filter_by_name, ->(name) { where("name ILIKE ?","%#{name}%")}
+
+  # include ImageUploader::attachment(:image)
+  mount_uploader :image_data, PhotoUploader
+
+  # has_one_attached :image
+  # validates_presence_of :image
+  # validates_size_of :image, maximum: 1.megabytes
+
+  # def image_url
+  #   Rails.application.routes.url_helper.url_for(image) if image.attached?
+  # end
 end
